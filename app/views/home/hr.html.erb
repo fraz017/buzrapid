@@ -1,0 +1,25 @@
+<div id="page-content-wrapper">
+  <div class="container-fluid">
+    <h1>Listing Companies HR</h1>
+    <%= link_to 'New HR', home_add_hr_path, :class => "btn btn-default" %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>    

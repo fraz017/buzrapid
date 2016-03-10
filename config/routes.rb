@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
+  resources :companies
   get 'home/index'
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   root to: "home#index"
+  get '/hr' => 'home#hr'
+  get '/home/add_hr' => 'home#add_hr'
+  post '/home/save_hr' => 'home#save_hr'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
