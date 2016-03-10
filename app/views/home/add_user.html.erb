@@ -42,12 +42,11 @@
       <div class="row">
         <div class="col-md-6">
           <div class="field">
-            <%= label_tag :Company %><br>
-            <%= select(:company, :name, Company.all.collect {|p| [ p.name, p.id ] },{} ,{:class => "form-control"}) %>
+            <%= label_tag :role %><br>
+            <%= f.select :role_cd, options_for_select([["Director", 2],["Manager", 1],["Executive",0]]),{},{:class => "form-control"} %>
           </div>
         </div>
       </div>
-      <input type="hidden" name="user[role_cd]" value="<%=@user.role_cd%>" />
       <div class="row">
         <div class="col-md-2">
           <div class="actions">

@@ -13,7 +13,7 @@
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
         <a href="#">
-            Buzz Rapid
+          Buzz Rapid
         </a>
       </li>
       <li>
@@ -25,6 +25,11 @@
 	      </li>
         <li>
           <a href="/hr">Hr</a>
+        </li>
+      <% end %>
+      <% if current_user.role == :hr %>
+        <li>
+          <a href="/employees">Employees</a>
         </li>
       <% end %>
     </ul>

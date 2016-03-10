@@ -1,14 +1,14 @@
 <div id="page-content-wrapper">
   <div class="container-fluid">
   <%= render 'layouts/messages' %>
-    <h1>Listing Companies HR</h1>
-    <%= link_to 'New HR', home_add_hr_path, :class => "btn btn-default" %>
+    <h1>Listing Companies Employees</h1>
+    <%= link_to 'New Employee', home_add_user_path, :class => "btn btn-default" %>
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Company</th>
+          <th>Role</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -18,7 +18,7 @@
           <tr>
             <td><%= user.name %></td>
             <td><%= user.email %></td>
-            <td><%= user.company.present? ? user.company.name : "" %></td>
+            <td><%= user.role.capitalize %></td>
             <td><%= link_to "Edit", home_edit_user_path({:id => user.id}), :class => "btn btn-warning" %>
             <%= link_to "Delete", home_delete_user_path({:id => user.id}), :method => :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-danger" %></td>
           </tr>

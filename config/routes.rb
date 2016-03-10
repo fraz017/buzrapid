@@ -8,7 +8,13 @@ Rails.application.routes.draw do
   root to: "home#index"
   get '/hr' => 'home#hr'
   get '/home/add_hr' => 'home#add_hr'
-  post '/home/save_hr' => 'home#save_hr'
+  get '/home/add_user' => 'home#add_user'
+  post '/home/save_user' => 'home#save_user'
+  post '/home/update_user' => 'home#update_user'
+  delete '/home/delete_user' => 'home#delete_user'
+  get '/home/edit_user' => 'home#edit_user'
+  get '/employees' => 'home#employees'
+
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

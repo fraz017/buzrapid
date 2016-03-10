@@ -1,6 +1,6 @@
 <div id="page-content-wrapper">
   <div class="container-fluid">
-    <%= form_for @user, :as => :user, :url => home_save_user_path(@user), :method => :post do |f| %>
+    <%= form_for @user, :as => :user, :url => home_update_user_path(@user), :method => :post do |f| %>
       <% if @errors.present? %>
         <div>
           <ul>
@@ -42,16 +42,26 @@
       <div class="row">
         <div class="col-md-6">
           <div class="field">
+          <% if current_user.role == :admin %>
             <%= label_tag :Company %><br>
-            <%= select(:company, :name, Company.all.collect {|p| [ p.name, p.id ] },{} ,{:class => "form-control"}) %>
+            <%= select(:company, :name, Company.all.collect {|p| [ p.name, p.id ] },{ :selected => @user.company_id } ,{:class => "form-control"}) %>
+          <% else %>
+            <%= label_tag :role %><br>
+            <%= f.select :role_cd, options_for_select([["Director", 2],["Manager", 1],["Executive",0]], :selected => @user.role_cd),{},{:class => "form-control"} %>
+          <% end %>  
           </div>
         </div>
       </div>
-      <input type="hidden" name="user[role_cd]" value="<%=@user.role_cd%>" />
+      <% if current_user.role == :admin %>
+        <input type="hidden" name="user[role_cd]" value="<%=@user.role_cd%>" />
+      <% else %>
+        <input type="hidden" name="user[company_id]" value="<%=@user.company_id%>" />
+      <% end %>  
+      <input type="hidden" name="id" value="<%=@user.id%>" />
       <div class="row">
         <div class="col-md-2">
           <div class="actions">
-            <%= submit_tag "Create", :class => "btn btn-default" %>
+            <%= f.submit class: "btn btn-default" %>
           </div>
         </div>
       </div>
