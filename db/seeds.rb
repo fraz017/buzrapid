@@ -8,7 +8,7 @@
 
 
 User.create :email => "admin@buzzrapid.com", :password => "password", :role_cd => 4
-User.create :email => "hr@buzzrapid.com", :password => "password", :role_cd => 3
-User.create :email => "director@buzzrapid.com", :password => "password", :role_cd => 2
-User.create :email => "manager@buzzrapid.com", :password => "password", :role_cd => 1
-User.create :email => "executive@buzzrapid.com", :password => "password", :role_cd => 0
+# User.create :email => "hr@buzzrapid.com", :password => "password", :role_cd => 3
+# User.create :email => "director@buzzrapid.com", :password => "password", :role_cd => 2
+# User.create :email => "manager@buzzrapid.com", :password => "password", :role_cd => 1
+# User.create :email => "executive@buzzrapid.com", :password => "password", :role_cd => 0
