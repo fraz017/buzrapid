@@ -1,0 +1,51 @@
+<div id="sidebar-alt">
+  <div id="sidebar-alt-scroll">
+    <div class="sidebar-content">
+      <a href="/" class="sidebar-title">
+          <i class="gi gi-cogwheel pull-right"></i> <strong>Header</strong>
+      </a>
+      <div class="sidebar-section">Section content..</div>
+    </div>
+  </div>
+</div>
+<div id="sidebar">
+  <div id="sidebar-scroll">
+    <div class="sidebar-content">
+      <a href="/" class="sidebar-brand">
+        <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Buzz</strong>Rapid</span>
+      </a>
+      <div class="sidebar-section sidebar-user clearfix sidebar-nav-mini-hide">
+        <div class="sidebar-user-avatar">
+          <a href="/">
+            <img src="/assets/placeholders/avatars/avatar.jpg" alt="avatar">
+          </a>
+        </div>
+        <div class="sidebar-user-name"><%= current_user.name %></div>
+        <div class="sidebar-user-links">
+          <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="gi gi-user"></i></a>
+          <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="gi gi-envelope"></i></a>
+          <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Settings"><i class="gi gi-cogwheel"></i></a>
+          <%= link_to('<i class="gi gi-exit"></i>'.html_safe, destroy_user_session_path, :method => :delete) %>
+        </div>
+      </div>
+      <ul class="sidebar-nav">
+        <li>
+          <a href="/" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'index' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dashboard</span></a>
+        </li>
+        <% if current_user.role == :admin %>
+          <li>
+            <a href="/companies" class="<%= 'active' if params[:controller] == 'companies' %>"><i class="fa fa-industry sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Companies</span></a>
+          </li>
+          <li>
+            <a href="/hr" class="<%= 'active' if params[:action] == 'hr' || params[:action] == 'add_hr' || params[:action] == 'edit_user' %>"><i class="fa fa-users sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">HR</span></a>
+          </li>
+        <% end %>
+        <% if current_user.role == :hr || current_user.role == :director %>
+          <li>
+            <a href="/employees" class="<%= 'active' if params[:action] == 'employees' || params[:action] == 'add_user' || params[:action] == 'edit_user' %>"><i class="fa fa-users sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Employees</span></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

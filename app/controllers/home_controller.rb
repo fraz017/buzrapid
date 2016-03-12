@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
   end
   def employees
-  	if current_user.role == :hr
+  	if current_user.role == :hr || current_user.role == :director
   		@users = current_user.company.users.where('role_cd != 3 and role_cd != 4')
   	else
   		redirect_to root_url

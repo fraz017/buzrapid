@@ -1,7 +1,24 @@
-<div id="page-content-wrapper">
-  <div class="container-fluid">
+  <div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+      <h1>
+        <i class="fa fa-users"></i>
+        HR
+        <br>
+        <br>
+        <small></small>
+      </h1>
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/hr">HR</a></li>
+  </ul>
   <%= render 'layouts/messages' %>
-    <h1>Listing Companies HR</h1>
+  <div class="block">
+    <div class="block-title">
+      <h2>HR</h2>
+    </div>
     <%= link_to 'New HR', home_add_hr_path, :class => "btn btn-default" %>
     <table class="table table-striped">
       <thead>
@@ -26,4 +43,5 @@
       </tbody>
     </table>
   </div>
-</div>    
+</div>
+

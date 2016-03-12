@@ -1,60 +1,85 @@
-<div id="page-content-wrapper">
-  <div class="container-fluid">
-    <%= form_for @user, :as => :user, :url => home_save_user_path(@user), :method => :post do |f| %>
-      <% if @errors.present? %>
-        <div>
-          <ul>
-          <% @errors.each do |k,v| %>
-            <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
-          <% end %>
-          </ul>
+<div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+      <h1>
+        <i class="fa fa-users"></i>
+        HR
+        <br>
+        <br>
+        <small></small>
+      </h1>
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/hr">HR</a></li>
+  </ul>
+  <%= render 'layouts/messages' %>
+  <div class="block">
+    <div class="block-title">
+      <h2>Add HR</h2>
+    </div>
+    <% if Company.all.present? %>
+      <%= form_for @user, :as => :user, :url => home_save_user_path(@user), :method => :post do |f| %>
+        <% if @errors.present? %>
+          <div>
+            <ul>
+            <% @errors.each do |k,v| %>
+              <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%= render 'layouts/messages' %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :name %><br>
+              <%= f.text_field :name, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :email %><br>
+              <%= f.email_field :email, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :password %><br>
+              <%= f.password_field :password, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :password_confirmation %><br>
+              <%= f.password_field :password_confirmation, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :Company %><br>
+              <%= select(:company, :name, Company.all.collect {|p| [ p.name, p.id ] },{} ,{:class => "form-control"}) %>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="user[role_cd]" value="<%=@user.role_cd%>" />
+        <div class="row">
+          <div class="col-md-2">
+            <div class="actions">
+              <%= submit_tag "Create", :class => "btn btn-default" %>
+            </div>
+          </div>
         </div>
       <% end %>
-      <%= render 'layouts/messages' %>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="field">
-            <%= label_tag :name %><br>
-            <%= f.text_field :name, :class => "form-control", :required => "required" %>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="field">
-            <%= label_tag :email %><br>
-            <%= f.email_field :email, :class => "form-control", :required => "required" %>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="field">
-            <%= label_tag :password %><br>
-            <%= f.password_field :password, :class => "form-control", :required => "required" %>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="field">
-            <%= label_tag :password_confirmation %><br>
-            <%= f.password_field :password_confirmation, :class => "form-control", :required => "required" %>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="field">
-            <%= label_tag :Company %><br>
-            <%= select(:company, :name, Company.all.collect {|p| [ p.name, p.id ] },{} ,{:class => "form-control"}) %>
-          </div>
-        </div>
-      </div>
-      <input type="hidden" name="user[role_cd]" value="<%=@user.role_cd%>" />
-      <div class="row">
-        <div class="col-md-2">
-          <div class="actions">
-            <%= submit_tag "Create", :class => "btn btn-default" %>
-          </div>
-        </div>
-      </div>
+    <% else %>
+      <strong>Please add a company first. thanks!</strong>  
+      <br>
     <% end %>
+    <br>
   </div>
-</div>  
+</div>

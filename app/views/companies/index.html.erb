@@ -1,6 +1,24 @@
-<div id="page-content-wrapper">
-  <div class="container-fluid">
-    <h1>Listing Companies</h1>
+<div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+      <h1>
+        <i class="fa fa-industry"></i>
+        Companies
+        <br>
+        <br>
+        <small></small>
+      </h1>
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/companies">Companies</a></li>
+  </ul>
+  <%= render 'layouts/messages' %>
+  <div class="block">
+    <div class="block-title">
+      <h2>Companies</h2>
+    </div>
     <%= link_to 'New Company', new_company_path, :class => "btn btn-default" %>
     <table class="table table-striped">
       <thead>
@@ -22,4 +40,4 @@
       </tbody>
     </table>
   </div>
-</div>    
+</div>

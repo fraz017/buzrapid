@@ -13,5 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap
-//= require_tree .
+//= require modernizr-respond.min
+//= require bootstrap.min
+//= require plugins
+//= require jquery.slimscroll.min
+//= require excanvas.min
+//= require login
+//= require app
+
