@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  bank_name: MyString
+  end_date: 2016-03-12
+  company_type: MyString
+  company_id: 1
+  appointed_person: 1
+  executive: 1
+  inflation: MyString
+  obsolete: MyString
+
+two:
+  name: MyString
+  bank_name: MyString
+  end_date: 2016-03-12
+  company_type: MyString
+  company_id: 1
+  appointed_person: 1
+  executive: 1
+  inflation: MyString
+  obsolete: MyString
