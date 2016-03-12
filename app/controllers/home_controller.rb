@@ -1,13 +1,19 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
-    if current_user.role == :admin || current_user.role == :director
+    if current_user.role == :admin 
       @projects = Project.all
+    else
+      root_url
     end
   end
   def new_project
-    @project = Project.new
-    @errors = params[:errors]
+    if current_user.role == :admin
+      @project = Project.new
+      @errors = params[:errors]
+    else
+      root_url
+    end
   end
   def save_project
     if project_params.present?
