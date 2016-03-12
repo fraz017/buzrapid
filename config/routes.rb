@@ -12,8 +12,13 @@ Rails.application.routes.draw do
   post '/home/save_user' => 'home#save_user'
   post '/home/update_user' => 'home#update_user'
   delete '/home/delete_user' => 'home#delete_user'
+  delete '/home/delete_project' => 'home#delete_project'
   get '/home/edit_user' => 'home#edit_user'
   get '/employees' => 'home#employees'
+  get '/home/new_project' => 'home#new_project'
+  post '/home/save_project' => 'home#save_project'
+  get '/home/edit_project' => 'home#edit_project'
+  post '/home/update_project' => 'home#update_project'
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

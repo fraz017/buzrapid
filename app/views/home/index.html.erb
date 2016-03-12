@@ -42,7 +42,41 @@
     <div class="block-title">
       <h2>Projects</h2>
     </div>
-    <p>...</p>
+    <%= link_to "Create new Project", home_new_project_path, :class => "btn btn-default" %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Bank</th>
+          <th>End Date</th>
+          <th>Industry Type</th>
+          <th>Industry Name</th>
+          <th>Appointed Person</th>
+          <th>Executive</th>
+          <th>Inflation Factor</th>
+          <th>Obsolete Factor</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @projects.each do |project| %>
+          <tr>
+            <td><%= project.name %></td>
+            <td><%= project.bank_name %></td>
+            <td><%= project.end_date %></td>
+            <td><%= project.company_type %></td>
+            <td><%= project.company.present? ? project.company.name : "" %></td>
+            <td><%= project.appointed_person %></td>
+            <td><%= project.executive %></td>
+            <td><%= project.inflation %></td>
+            <td><%= project.obsolete %></td>
+            <td><%= link_to "Edit", home_edit_project_path({:id => project.id}), :class => "btn btn-warning" %>
+            <%= link_to "Delete", home_delete_project_path({:id => project.id}), :method => :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-danger" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
   	

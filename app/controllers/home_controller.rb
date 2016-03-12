@@ -1,7 +1,53 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
+    if current_user.role == :admin || current_user.role == :director
+      @projects = Project.all
+    end
   end
+  def new_project
+    @project = Project.new
+    @errors = params[:errors]
+  end
+  def save_project
+    if project_params.present?
+      @project = Project.new project_params
+      if @project.save
+        flash[:notice] = "Successfully Added!"
+        redirect_to root_url
+      else
+        flash[:notice] = "Something went wrong!"
+        redirect_to home_new_project_path({:errors => @project.errors.messages})
+      end
+    end
+  end
+
+  def edit_project
+    if params[:id].present?
+      @project = Project.where(:id => params[:id]).last
+      if @project.blank?
+        redirect_to root_url
+      end
+      @errors = params[:errors]
+    else
+      redirect_to root_url
+    end
+  end
+
+  def update_project
+    if project_params.present? and params[:id]
+      @project = Project.find params[:id]
+      if @project.present? && @project.update_attributes(project_params)
+        flash[:notice] = "Successfully Updated!"
+        redirect_to root_url
+      else
+        redirect_to home_edit_project_path({:errors => @project.errors.messages, :id => @user.id})
+      end
+    else
+      redirect_to root_url  
+    end
+  end
+
   def employees
   	if current_user.role == :hr || current_user.role == :director
   		@users = current_user.company.users.where('role_cd != 3 and role_cd != 4')
@@ -47,6 +93,21 @@ class HomeController < ApplicationController
   	end
   end
 
+  def delete_project
+    if params[:id].present?
+      project = Project.where(:id => params[:id]).last
+      if project.destroy
+        flash[:notice] = "Successfully Destroyed!"
+        redirect_to root_url
+      else
+        flash[:notice] = "Something went wrong!"
+        redirect_to root_url
+      end
+    else
+      redirect_to root_url
+    end
+  end
+
   def delete_user
   	if params[:id].present?
   		user = User.where(:id => params[:id]).last
@@ -65,6 +126,8 @@ class HomeController < ApplicationController
   				redirect_to employees_path
   			end
   		end
+    else
+      redirect_to root_url  
   	end
   end
 
@@ -113,5 +176,8 @@ class HomeController < ApplicationController
   private
   def user_params
   	params.require(:user).permit(:id ,:name, :email, :password, :password_confirmation, :role_cd)
+  end
+  def project_params
+    params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete)
   end
 end
