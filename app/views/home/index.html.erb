@@ -1,18 +1,30 @@
 <div id="page-content">
   <div class="content-header">
     <div class="header-section">
-      <% if current_user.role == :admin %>
+      <% if current_user.role == :admin || current_user.role == :manager || current_user.role == :director %>
         <%= search_form_for @q, url: home_index_path, html: { method: :get } do |f| %>
           <div class="row">
             <div class="col-md-6">
               <label>Project Name</label>
               <%= f.search_field :name_cont, :class => "form-control" %>
             </div>
-            <div class="col-md-6">
-              <label>Company</label>
-              <% options = options_from_collection_for_select(Company.all, 'id', 'name') %>
-              <%= f.select :company_id,  options, {include_blank: "Select Company.."} ,:class => "form-control" %>
-            </div>
+            <% if current_user.role == :admin %>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :industry_name %><br>
+                  <% options = options_from_collection_for_select(Company.all, 'id', 'name', :selected => params[:q].try(:[],:company_id_eq)) %>
+                  <%= f.select :company_id_eq,  options, {} ,:class => "form-control" %>
+                </div>
+              </div>
+            <% else %>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :industry_name %><br>
+                  <input type="text" readonly="readonly" value="<%= current_user.company.name %>" class="form-control" />
+                  <input type="hidden" name="company_id_eq" value="<%= current_user.company_id %>" />
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class="row">
             <div class="col-md-6">
