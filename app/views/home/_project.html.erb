@@ -86,7 +86,7 @@
           <div class="col-md-6">
             <div class="field">
               <%= label_tag :inflation %><br>
-              <%= f.text_field :inflation, :class => "form-control", :required => "required" %>
+              <%= f.text_field :inflation, :class => "form-control" %>
             </div>
           </div>
         </div>
@@ -94,7 +94,13 @@
           <div class="col-md-6">
             <div class="field">
               <%= label_tag :obsolete %><br>
-              <%= f.text_field :obsolete, :class => "form-control", :required => "required" %>
+              <%= f.text_field :obsolete, :class => "form-control" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :upload_excel %><br>
+              <%= f.file_field :file, :class => "form-control" %>
             </div>
           </div>
         </div>

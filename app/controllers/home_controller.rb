@@ -2,7 +2,8 @@ class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
     if current_user.role == :admin 
-      @projects = Project.all
+      @q = Project.ransack(params[:q])
+      @projects = @q.result.paginate(:page => params[:page], :per_page => 5)
     else
       root_url
     end
@@ -19,6 +20,9 @@ class HomeController < ApplicationController
     if project_params.present?
       @project = Project.new project_params
       if @project.save
+        if @project.file_file_size.present?
+          ExcelDatum.import @project 
+        end
         flash[:notice] = "Successfully Added!"
         redirect_to root_url
       else
@@ -47,7 +51,7 @@ class HomeController < ApplicationController
         flash[:notice] = "Successfully Updated!"
         redirect_to root_url
       else
-        redirect_to home_edit_project_path({:errors => @project.errors.messages, :id => @user.id})
+        redirect_to home_edit_project_path({:errors => @project.errors.messages, :id => @project.id})
       end
     else
       redirect_to root_url  
@@ -184,6 +188,6 @@ class HomeController < ApplicationController
   	params.require(:user).permit(:id ,:name, :email, :password, :password_confirmation, :role_cd)
   end
   def project_params
-    params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete)
+    params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete, :file)
   end
 end

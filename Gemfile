@@ -24,6 +24,10 @@ gem 'devise'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'simple_enum', '~> 2.0.0'
+gem 'paperclip'
+gem 'rubyXL'
+gem 'ransack'
+gem 'will_paginate-bootstrap'
 # Use Unicorn as the app server
 # gem 'unicorn'
 # Use Capistrano for deployment

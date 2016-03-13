@@ -2733,6 +2733,9 @@ li.dropdown-header {
 }
 
 .pagination > li > a,
+.pagination > a,
+.pagination > em,
+.pagination > span,
 .pagination > li > span  {
     color: #1bbae1;
     margin-left: 5px;
@@ -2742,6 +2745,8 @@ li.dropdown-header {
 }
 
 .pagination > .active > a,
+.pagination > .active > em,
+.pagination > .active > em:hover,
 .pagination > .active > span,
 .pagination > .active > a:hover,
 .pagination > .active > span:hover,
@@ -2756,6 +2761,9 @@ li.dropdown-header {
 }
 
 .pager > li > a:hover,
+.pagination > a:hover,
+.pagination > span:hover,
+.pagination > em:hover,
 .pagination > li > a:hover {
     background-color: #1bbae1;
     border-color: #1bbae1;

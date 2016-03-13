@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  com_name: MyString
+  com_type: MyString
+  purchase_date: 2016-03-12
+  company_type: MyString
+  quantity: 1
+  purchase_unit: 1.5
+  est_price_soft: 1.5
+  est_price_pp: 1.5
+  market_value: 1.5
+  exp_life: MyString
+  values_used: MyString
+  date_purchase: 2016-03-12
+  remain_life: MyString
+  inflation: MyString
+  obsolete: MyString
+  final_value: 1.5
+  project_id: 1
+
+two:
+  com_name: MyString
+  com_type: MyString
+  purchase_date: 2016-03-12
+  company_type: MyString
+  quantity: 1
+  purchase_unit: 1.5
+  est_price_soft: 1.5
+  est_price_pp: 1.5
+  market_value: 1.5
+  exp_life: MyString
+  values_used: MyString
+  date_purchase: 2016-03-12
+  remain_life: MyString
+  inflation: MyString
+  obsolete: MyString
+  final_value: 1.5
+  project_id: 1
