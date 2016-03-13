@@ -1,0 +1,70 @@
+<div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+       
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/"><%= current_user.role == :admin ? "Projects" : "" %></a></li>
+  </ul>
+  <%= render 'layouts/messages' %>
+  <% if current_user.role == :admin %>
+    <div class="block">
+      <div class="block-title">
+        <h2><%= @project_name %></h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-vcenter table-striped">
+          <thead>
+            <tr>
+              <th>Name of Component</th>
+              <th>Type</th>
+              <th>Purchase Date</th>
+              <th>Industry</th>
+              <th>Quantity</th>
+              <th>Purchase Price/Unit</th>
+              <th>Est Price from Soft Volt A</th>
+              <th>Est Price from Past Projects B</th>
+              <th>Market Value C</th>
+              <th>Expected Life</th>
+              <th>Value Used</th>
+              <th>Est Date</th>
+              <th>Remaining Life</th>
+              <th>Inflation Factor</th>
+              <th>Obsolete Factor</th>
+              <th>Final Value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @records.each do |record| %>
+              <tr>
+                <td><%= record.com_name %></td>
+                <td><%= record.com_type %></td>
+                <td><%= record.purchase_date %></td>
+                <td><%= record.company_type %></td>
+                <td><%= record.quantity %></td>
+                <td><%= record.purchase_unit %></td>
+                <td><%= record.est_price_soft %></td>
+                <td><%= record.est_price_pp %></td>
+                <td><%= record.market_value %></td>
+                <td><%= record.exp_life %></td>
+                <td><%= record.values_used %></td>
+                <td><%= record.date_purchase %></td>
+                <td><%= record.remain_life %></td>
+                <td><%= record.inflation %></td>
+                <td><%= record.obsolete %></td>
+                <td><%= record.final_value %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <%= will_paginate @records, renderer: BootstrapPagination::Rails, :class => "pagination" %>
+    </div>
+  <% else %>
+
+  <% end %>  
+</div>
+  	

@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
     if current_user.role == :admin 
       @q = Project.ransack(params[:q])
-      @projects = @q.result.paginate(:page => params[:page], :per_page => 5)
+      @projects = @q.result.paginate(:page => params[:page], :per_page => 10)
     else
       root_url
     end
@@ -21,17 +21,32 @@ class HomeController < ApplicationController
       @project = Project.new project_params
       if @project.save
         if @project.file_file_size.present?
-          ExcelDatum.import @project 
+          begin
+            ExcelDatum.import @project 
+          rescue
+            flash[:notice] = "Something went wrong. Please check the excel file format."
+            redirect_to root_url  
+          end
         end
         flash[:notice] = "Successfully Added!"
-        redirect_to root_url
+        @project_name = @project.name 
+        redirect_to home_show_excel_path({:id => @project.id})
       else
-        flash[:notice] = "Something went wrong!"
         redirect_to home_new_project_path({:errors => @project.errors.messages})
       end
     end
   end
-
+  def show_excel
+    if params[:id].present?
+      project = Project.where(:id => params[:id]).last
+      if project.present?
+        @project_name = project.name
+      end
+      @records = ExcelDatum.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+    else
+      redirect_to root_url
+    end
+  end
   def edit_project
     if params[:id].present?
       @project = Project.where(:id => params[:id]).last

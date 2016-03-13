@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   post '/home/save_project' => 'home#save_project'
   get '/home/edit_project' => 'home#edit_project'
   post '/home/update_project' => 'home#update_project'
-
+  get '/home/show_excel' => 'home#show_excel'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
