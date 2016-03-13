@@ -30,7 +30,7 @@
       </div>
       <ul class="sidebar-nav">
         <li>
-          <a href="/" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'index' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"><%= current_user.role == :admin ? "Projects" : "Dashboard" %></span></a>
+          <a href="/" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'index' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"><%= current_user.role == :admin || current_user.role == :director || current_user.role == :manager ? "Projects" : "Dashboard" %></span></a>
         </li>
         <% if current_user.role == :admin %>
           <li>

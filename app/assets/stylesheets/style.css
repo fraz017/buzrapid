@@ -72,4 +72,6 @@ color: #D8000C;
 background-color: #FFBABA;
 
 }
-
+.white-space{
+  white-space: nowrap;
+}

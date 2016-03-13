@@ -1,15 +1,19 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
-    if current_user.role == :admin 
-      @q = Project.ransack(params[:q])
+    if current_user.role == :admin || current_user.role == :director || current_user.role == :manager 
+      if current_user.role == :admin
+        @q = Project.ransack(params[:q])
+      elsif current_user.role == :director || current_user.role == :manager
+        @q = current_user.company.projects.ransack(params[:q])
+      end
       @projects = @q.result.paginate(:page => params[:page], :per_page => 10)
     else
       root_url
     end
   end
   def new_project
-    if current_user.role == :admin
+    if current_user.role == :admin || current_user.role == :director || current_user.role == :manager
       @project = Project.new
       @errors = params[:errors]
     else
@@ -200,7 +204,7 @@ class HomeController < ApplicationController
 
   private
   def user_params
-  	params.require(:user).permit(:id ,:name, :email, :password, :password_confirmation, :role_cd)
+  	params.require(:user).permit(:id ,:name, :email, :password, :password_confirmation, :role_cd, :company_id)
   end
   def project_params
     params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete, :file)

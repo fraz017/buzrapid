@@ -6,10 +6,10 @@
   </div>
   <ul class="breadcrumb breadcrumb-top">
     <li>Dashboard</li>
-    <li><a href="/"><%= current_user.role == :admin ? "Projects" : "" %></a></li>
+    <li><a href="/">Projects</a></li>
   </ul>
   <%= render 'layouts/messages' %>
-  <% if current_user.role == :admin %>
+  <% if current_user.role == :admin || current_user.role == :director || current_user.role == :manager %>
     <div class="block">
       <div class="block-title">
         <h2><%= @project_name %></h2>
@@ -64,7 +64,7 @@
       <%= will_paginate @records, renderer: BootstrapPagination::Rails, :class => "pagination" %>
     </div>
   <% else %>
-
+    <strong>you are not authrorized!</strong>
   <% end %>  
 </div>
   	

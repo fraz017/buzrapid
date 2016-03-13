@@ -19,7 +19,7 @@
     <div class="block-title">
       <h2>Add Project</h2>
     </div>
-    <% if current_user.role == :admin %>
+    <% if current_user.role == :admin || current_user.role == :manager || current_user.role == :director %>
       <%= form_for @project, :as => :project, :url => @project.id.present? ? home_update_project_path(@project) : home_save_project_path(@project), :method => :post do |f| %>
         <% if @errors.present? %>
           <div>
@@ -60,6 +60,7 @@
           </div>
         </div>
         <div class="row">
+        <% if current_user.role == :admin %>
           <div class="col-md-6">
             <div class="field">
               <%= label_tag :industry_name %><br>
@@ -67,6 +68,15 @@
               <%= f.select :company_id,  options, {} ,:class => "form-control" %>
             </div>
           </div>
+        <% else %>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :industry_name %><br>
+              <input type="text" readonly="readonly" value="<%= current_user.company.name %>" class="form-control" />
+              <input type="hidden" name="project[company_id]" value="<%= current_user.company_id %>" />
+            </div>
+          </div>
+        <% end %>  
           <div class="col-md-6">
             <div class="field">
               <%= label_tag :appointed_person %><br>
