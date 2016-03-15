@@ -9,7 +9,7 @@
     <li><a href="/">Projects</a></li>
   </ul>
   <%= render 'layouts/messages' %>
-  <% if current_user.role == :admin || current_user.role == :director || current_user.role == :manager %>
+  <% if management? %>
     <div class="block">
       <div class="block-title">
         <h2><%= @project_name %></h2>

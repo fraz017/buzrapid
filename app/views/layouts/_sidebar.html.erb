@@ -30,8 +30,16 @@
       </div>
       <ul class="sidebar-nav">
         <li>
-          <a href="/" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'index' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"><%= current_user.role == :admin || current_user.role == :director || current_user.role == :manager ? "Projects" : "Dashboard" %></span></a>
+          <a href="/" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'index' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide"><%= management? ? "Projects" : "Dashboard" %></span></a>
         </li>
+        <% if management? %>
+          <li>
+            <a href="/ongoing_projects" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'ongoing_projects' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Ongoing Projects</span></a>
+          </li>
+          <li>
+            <a href="/completed_projects" class="<%= 'active' if params[:controller] == 'home' and params[:action] == 'completed_projects' %>"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Completed Projects</span></a>
+          </li>
+        <% end %>
         <% if current_user.role == :admin %>
           <li>
             <a href="/companies" class="<%= 'active' if params[:controller] == 'companies' %>"><i class="fa fa-industry sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Companies</span></a>

@@ -19,7 +19,7 @@
     <div class="block-title">
       <h2>Add Project</h2>
     </div>
-    <% if current_user.role == :admin || current_user.role == :manager || current_user.role == :director %>
+    <% if management? %>
       <%= form_for @project, :as => :project, :url => @project.id.present? ? home_update_project_path(@project) : home_save_project_path(@project), :method => :post do |f| %>
         <% if @errors.present? %>
           <div>

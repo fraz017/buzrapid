@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
-    if current_user.role == :admin || current_user.role == :director || current_user.role == :manager 
+    if current_user.role == :director || current_user.role == :manager || current_user.role == :admin 
       if current_user.role == :admin
         @q = Project.ransack(params[:q])
       elsif current_user.role == :director || current_user.role == :manager
@@ -12,8 +12,30 @@ class HomeController < ApplicationController
       root_url
     end
   end
+  def ongoing_projects
+    if current_user.role == :director || current_user.role == :manager || current_user.role == :admin 
+      if current_user.role == :admin
+        @projects = Project.where("DATE(end_date) > ?", Date.today.to_s).paginate(:page => params[:page], :per_page => 10)
+      else
+        @projects = current_user.company.projects.where("DATE(end_date) > ?", Date.today.to_s).paginate(:page => params[:page], :per_page => 10)  
+      end
+    else
+      redirect_to root_url
+    end
+  end
+  def completed_projects
+    if current_user.role == :director || current_user.role == :manager || current_user.role == :admin 
+      if current_user.role == :admin
+        @projects = Project.where("DATE(end_date) < ?", Date.today.to_s).paginate(:page => params[:page], :per_page => 10)
+      else
+        @projects = current_user.company.projects.where("DATE(end_date) < ?", Date.today.to_s).paginate(:page => params[:page], :per_page => 10)  
+      end
+    else
+      redirect_to root_url
+    end
+  end
   def new_project
-    if current_user.role == :admin || current_user.role == :director || current_user.role == :manager
+    if current_user.role == :director || current_user.role == :manager || current_user.role == :admin
       @project = Project.new
       @errors = params[:errors]
     else
