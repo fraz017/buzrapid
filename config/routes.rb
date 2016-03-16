@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/home/show_excel' => 'home#show_excel'
   get '/ongoing_projects' => 'home#ongoing_projects'
   get '/completed_projects' => 'home#completed_projects'
+  post '/home/save_record' => 'home#save_record'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

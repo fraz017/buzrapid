@@ -1,18 +1,98 @@
 <div id="page-content">
   <div class="content-header">
     <div class="header-section">
-       
+      <% if management? %>
+      <strong><h1>Add New Record</h1></strong>
+      <br>
+      <%= form_for @excel, :as => :excel, :url => home_save_record_path(@excel), :method => :post do |f| %>
+        <% if @errors.present? %>
+          <div>
+            <ul>
+            <% @errors.each do |k,v| %>
+              <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%= render 'layouts/messages' %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :com_name, "Component Name" %><br>
+              <%= f.text_field :com_name, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :purchase_date %><br>
+              <%= f.date_field :purchase_date, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :purchase_unit, "Purchase Price" %><br>
+              <%= f.text_field :purchase_unit, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :description %><br>
+              <%= f.text_field :company_type, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :location %><br>
+              <%= f.text_field :location, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :import_export, "Import/Export" %><br>
+              <%= f.text_field :import_export, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :market_value %><br>
+              <%= f.text_field :market_value, :class => "form-control", :required => "required" %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="field">
+              <%= label_tag :source %><br>
+              <%= f.text_field :source, :class => "form-control" %>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="id" value="<%= @project.id %>" />
+        <div class="row">
+          <div class="col-md-2">
+            <div class="actions">
+              <%= submit_tag "Create", :class => "btn btn-default" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <strong>You are not authorized!</strong>  
+    <% end %>
     </div>
   </div>
   <ul class="breadcrumb breadcrumb-top">
     <li>Dashboard</li>
     <li><a href="/">Projects</a></li>
   </ul>
-  <%= render 'layouts/messages' %>
   <% if management? %>
     <div class="block">
       <div class="block-title">
-        <h2><%= @project_name %></h2>
+        <h2><%= @project.name %></h2>
       </div>
       <div class="table-responsive">
         <table class="table table-vcenter table-striped">
@@ -21,6 +101,7 @@
               <th>Name of Component</th>
               <th>Type</th>
               <th>Purchase Date</th>
+              <th>Location</th>
               <th>Industry</th>
               <th>Quantity</th>
               <th>Purchase Price/Unit</th>
@@ -31,9 +112,11 @@
               <th>Value Used</th>
               <th>Est Date</th>
               <th>Remaining Life</th>
+              <th>Import/Export</th>
               <th>Inflation Factor</th>
               <th>Obsolete Factor</th>
               <th>Final Value</th>
+              <th>Source</th>
             </tr>
           </thead>
 
@@ -43,6 +126,7 @@
                 <td><%= record.com_name %></td>
                 <td><%= record.com_type %></td>
                 <td><%= record.purchase_date %></td>
+                <td><%= record.location %></td>
                 <td><%= record.company_type %></td>
                 <td><%= record.quantity %></td>
                 <td><%= record.purchase_unit %></td>
@@ -53,9 +137,11 @@
                 <td><%= record.values_used %></td>
                 <td><%= record.date_purchase %></td>
                 <td><%= record.remain_life %></td>
+                <td><%= record.import_export %></td>
                 <td><%= record.inflation %></td>
                 <td><%= record.obsolete %></td>
                 <td><%= record.final_value %></td>
+                <td><%= record.source %></td>
               </tr>
             <% end %>
           </tbody>

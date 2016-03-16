@@ -64,11 +64,26 @@ class HomeController < ApplicationController
   end
   def show_excel
     if params[:id].present?
-      project = Project.where(:id => params[:id]).last
-      if project.present?
-        @project_name = project.name
-      end
+      @project = Project.where(:id => params[:id]).last
+      @excel = ExcelDatum.new
       @records = ExcelDatum.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+    else
+      redirect_to root_url
+    end
+  end
+  def save_record
+    if params[:id].present?
+      project = Project.where(:id => params[:id]).last
+      if excel_params.present?
+        excel = ExcelDatum.new excel_params
+        excel.project_id = params[:id]
+        if excel.save
+          flash[:notice] = "Successfully saved!"
+        else
+          flash[:notice] = "Something went wrong!"
+        end
+        redirect_to request.referer
+      end
     else
       redirect_to root_url
     end
@@ -230,5 +245,8 @@ class HomeController < ApplicationController
   end
   def project_params
     params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete, :file)
+  end
+  def excel_params
+    params.require(:excel).permit(:com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
   end
 end
