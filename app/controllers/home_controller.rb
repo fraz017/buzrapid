@@ -55,11 +55,10 @@ class HomeController < ApplicationController
             end
           rescue
             flash[:notice] = "Something went wrong. Please check the excel file format."
-            redirect_to root_url  
           end
         end
         flash[:notice] = "Successfully Added!"
-        # redirect_to home_show_excel_path({:id => @project.id})
+        redirect_to home_show_excel_path({:id => @project.id})
       else
         redirect_to home_new_project_path({:errors => @project.errors.messages})
       end
@@ -91,6 +90,19 @@ class HomeController < ApplicationController
       end
     else
       redirect_to root_url
+    end
+    respond_to do |format|
+      format.html
+      format.xlsx {
+        if current_user.role == :admin
+          file_path = AdminDb.generate_excel params[:id]
+        else 
+          file_path = ExcelDatum.generate_excel params[:id]
+        end
+        if file_path.present?
+          send_file file_path
+        end
+      }
     end
   end
   def save_record

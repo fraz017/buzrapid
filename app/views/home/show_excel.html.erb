@@ -20,6 +20,7 @@
         <h2><%= @project.name %></h2>
       </div>
       <div class="table-responsive">
+      <%= link_to "Download Excel", home_show_excel_path(request.parameters.merge({:format => :xlsx})), :class => "btn btn-default" %>
         <table class="table table-vcenter table-striped">
           <thead>
             <tr>
