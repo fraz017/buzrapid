@@ -20,7 +20,7 @@
             <img src="/assets/placeholders/avatars/avatar.jpg" alt="avatar">
           </a>
         </div>
-        <div class="sidebar-user-name"><%= current_user.name %></div>
+        <div class="sidebar-user-name"><%= current_user.name %><br><%= current_user.role.capitalize %></div>
         <div class="sidebar-user-links">
           <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="gi gi-user"></i></a>
           <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="gi gi-envelope"></i></a>
