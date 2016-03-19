@@ -1,7 +1,7 @@
 require 'rubyXL'
 class ExcelDatum < ActiveRecord::Base
 	belongs_to :project
-
+	before_save :fill_values
 	def self.import(project)
 		workbook = RubyXL::Parser.parse project.file.path
 		worksheet = workbook[0]
@@ -26,6 +26,57 @@ class ExcelDatum < ActiveRecord::Base
 	      data.final_value = row[15].value.present? ? row[15].value.to_f : 0.0    
 	      data.project_id = project.id
  				data.save	
+			end
+		end
+	end
+	private
+	def fill_values
+		if self.est_price_soft.blank?
+			begin
+				check = AdminDb.where(:com_name => self.com_name).last
+				if check.present?
+					self.est_price_soft = check.est_price_soft
+				end
+			rescue 
+				''
+			end
+		end
+		if self.est_price_pp.blank?
+			begin
+				check = ExcelDatum.where(:com_name => self.com_name).last
+				if check.present?
+					self.est_price_pp = check.est_price_pp
+				end	
+			rescue 
+				''
+			end
+		end
+		if self.remain_life.blank?
+			begin
+				if self.purchase_date.present?
+					diff = self.exp_life-(((Date.today-self.purchase_date.to_date).to_i)/365.0)
+					self.remain_life = diff
+				end	
+			rescue 
+				''
+			end
+		end
+		if self.inflation.blank?
+			begin
+				inflation_factor = self.project.inflation
+				obsolete_factor = self.project.obsolete.split("%")[0]
+				self.inflation = inflation_factor	
+			rescue 
+				''
+			end
+		end
+		if final_value.blank?
+			begin
+				if self.com_type == "A"
+					self.final_value = ((self.purchase_unit*(inflation_factor.split("%")[0]))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor*diff)/self.exp_life.to_f
+				end	
+			rescue
+				''
 			end
 		end
 	end

@@ -2,84 +2,9 @@
   <div class="content-header">
     <div class="header-section">
       <% if management? %>
-      <strong><h1>Add New Record</h1></strong>
+      <strong><h1><%= @excel.present? && @excel.id.present? ? "Update Record" : "Add New Record" %></h1></strong>
       <br>
-      <%= form_for @excel, :as => :excel, :url => home_save_record_path(@excel), :method => :post do |f| %>
-        <% if @errors.present? %>
-          <div>
-            <ul>
-            <% @errors.each do |k,v| %>
-              <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
-            <% end %>
-            </ul>
-          </div>
-        <% end %>
-        <%= render 'layouts/messages' %>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :com_name, "Component Name" %><br>
-              <%= f.text_field :com_name, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :purchase_date %><br>
-              <%= f.date_field :purchase_date, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :purchase_unit, "Purchase Price" %><br>
-              <%= f.text_field :purchase_unit, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :description %><br>
-              <%= f.text_field :company_type, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :location %><br>
-              <%= f.text_field :location, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :import_export, "Import/Export" %><br>
-              <%= f.text_field :import_export, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :market_value %><br>
-              <%= f.text_field :market_value, :class => "form-control", :required => "required" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="field">
-              <%= label_tag :source %><br>
-              <%= f.text_field :source, :class => "form-control" %>
-            </div>
-          </div>
-        </div>
-        <input type="hidden" name="id" value="<%= @project.id %>" />
-        <div class="row">
-          <div class="col-md-2">
-            <div class="actions">
-              <%= submit_tag "Create", :class => "btn btn-default" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
+      <%= render partial: "record" %>
     <% else %>
       <strong>You are not authorized!</strong>  
     <% end %>
@@ -117,6 +42,7 @@
               <th>Obsolete Factor</th>
               <th>Final Value</th>
               <th>Source</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -142,6 +68,8 @@
                 <td><%= record.obsolete %></td>
                 <td><%= record.final_value %></td>
                 <td><%= record.source %></td>
+                <td><%= link_to "<i class='fa fa-pencil'></i>".html_safe, home_show_excel_path({:id => @project.id, :record_id => record.id }), :class => "btn-xs btn-warning" %>
+                <%= link_to "<i class='fa fa-times'></i>".html_safe, home_delete_record_path({:id => record.id }), :method => :delete, :data => { confirm: "Are you sure?" }, :class => "btn-xs btn-danger" %></td>
               </tr>
             <% end %>
           </tbody>

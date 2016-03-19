@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get '/ongoing_projects' => 'home#ongoing_projects'
   get '/completed_projects' => 'home#completed_projects'
   post '/home/save_record' => 'home#save_record'
+  get '/edit_record' => 'home#edit_record'
+  delete '/home/delete_record' => 'home#delete_record'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

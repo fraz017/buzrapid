@@ -11,7 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316153956) do
+ActiveRecord::Schema.define(version: 20160317110759) do
+
+  create_table "admin_dbs", force: :cascade do |t|
+    t.string   "com_name",       limit: 255
+    t.string   "com_type",       limit: 255
+    t.date     "purchase_date"
+    t.string   "company_type",   limit: 255
+    t.integer  "quantity",       limit: 4
+    t.float    "purchase_unit",  limit: 24
+    t.float    "est_price_soft", limit: 24
+    t.float    "est_price_pp",   limit: 24
+    t.float    "market_value",   limit: 24
+    t.string   "exp_life",       limit: 255
+    t.string   "values_used",    limit: 255
+    t.date     "date_purchase"
+    t.string   "remain_life",    limit: 255
+    t.string   "inflation",      limit: 255
+    t.string   "obsolete",       limit: 255
+    t.float    "final_value",    limit: 24
+    t.integer  "project_id",     limit: 4
+    t.string   "import_export",  limit: 255
+    t.string   "location",       limit: 255
+    t.string   "source",         limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string   "name",         limit: 255

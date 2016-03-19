@@ -48,15 +48,18 @@ class HomeController < ApplicationController
       if @project.save
         if @project.file_file_size.present?
           begin
-            ExcelDatum.import @project 
+            if current_user.role == :admin
+              AdminDb.import @project 
+            else
+              ExcelDatum.import @project 
+            end
           rescue
             flash[:notice] = "Something went wrong. Please check the excel file format."
             redirect_to root_url  
           end
         end
         flash[:notice] = "Successfully Added!"
-        @project_name = @project.name 
-        redirect_to home_show_excel_path({:id => @project.id})
+        # redirect_to home_show_excel_path({:id => @project.id})
       else
         redirect_to home_new_project_path({:errors => @project.errors.messages})
       end
@@ -65,8 +68,27 @@ class HomeController < ApplicationController
   def show_excel
     if params[:id].present?
       @project = Project.where(:id => params[:id]).last
-      @excel = ExcelDatum.new
-      @records = ExcelDatum.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+      if current_user.role == :admin
+        if params[:record_id].present?
+          @excel = AdminDb.where(:id => params[:record_id]).last
+          if @excel.blank?
+            @excel = AdminDb.new
+          end 
+        else
+          @excel = AdminDb.new
+        end
+        @records = AdminDb.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+      else
+        if params[:record_id].present?
+          @excel = ExcelDatum.where(:id => params[:record_id]).last 
+          if @excel.blank?
+            @excel = ExcelDatum.new
+          end 
+        else
+          @excel = ExcelDatum.new
+        end
+        @records = ExcelDatum.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+      end
     else
       redirect_to root_url
     end
@@ -74,18 +96,53 @@ class HomeController < ApplicationController
   def save_record
     if params[:id].present?
       project = Project.where(:id => params[:id]).last
-      if excel_params.present?
-        excel = ExcelDatum.new excel_params
-        excel.project_id = params[:id]
-        if excel.save
-          flash[:notice] = "Successfully saved!"
-        else
-          flash[:notice] = "Something went wrong!"
+      if project.present?
+        if excel_params.present?
+          if current_user.role == :admin
+            if excel_params[:id].present?
+              excel = AdminDb.where(:id => excel_params[:id]).last
+              excel.update_attributes(excel_params)
+            else
+              excel = AdminDb.new excel_params
+            end
+          else
+            if excel_params[:id].present?
+              excel = ExcelDatum.where(:id => excel_params[:id]).last
+              excel.update_attributes(excel_params)
+            else
+              excel = ExcelDatum.new excel_params
+            end
+          end
+          excel.project_id = params[:id]
+          if excel.save
+            flash[:notice] = "Successfully saved!"
+          else
+            flash[:notice] = "Something went wrong!"
+          end
+          redirect_to home_show_excel_path({:id => project.id})
         end
-        redirect_to request.referer
+      else
+        redirect_to root_url
       end
     else
       redirect_to root_url
+    end
+  end
+  def delete_record
+    if params[:id].present?
+      if current_user.role == :admin
+        record = AdminDb.where(:id => params[:id]).last
+      else
+        record = ExcelDatum.where(:id => params[:id]).last
+      end
+      if record.present? and record.destroy
+        flash[:notice] = "Successfully Destroyed!"
+      else
+        flash[:notice] = "Something went wrong!"
+      end
+      redirect_to request.referer
+    else
+      redirect_to request.referer  
     end
   end
   def edit_project
@@ -247,6 +304,6 @@ class HomeController < ApplicationController
     params.require(:project).permit(:id ,:name, :bank_name, :end_date, :company_type, :company_id, :appointed_person, :executive, :inflation, :obsolete, :file)
   end
   def excel_params
-    params.require(:excel).permit(:com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
+    params.require(:excel_datum).permit(:id, :com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
   end
 end
