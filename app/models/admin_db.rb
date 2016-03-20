@@ -86,6 +86,78 @@ class AdminDb < ActiveRecord::Base
 	end
 	private
 	def fill_values
+		if self.est_price_soft.blank?
+			begin
+				check = AdminDb.where(:com_name => self.com_name).last
+				if check.present?
+					self.est_price_soft = check.est_price_soft
+				else
+					check = ExcelDatum.where(:com_name => self.com_name).last
+					if check.present?
+						self.est_price_soft = check.est_price_soft
+					end
+				end
+			rescue 
+				''
+			end
+		end
+		if self.est_price_pp.blank?
+			begin
+				check = ExcelDatum.where(:com_name => self.com_name).last
+				if check.present?
+					self.est_price_pp = check.est_price_pp
+				end	
+			rescue 
+				''
+			end
+		end
+		if self.remain_life.blank?
+			begin
+				if self.purchase_date.present?
+					diff = (self.exp_life.to_f-(((Date.today-self.purchase_date.to_date).to_i)/365.0)).round(2)
+					self.remain_life = diff
+				end	
+			rescue 
+				''
+			end
+		end
+		if self.inflation.blank?
+			begin
+				inflation_factor = self.project.inflation
+				self.inflation = inflation_factor	
+			rescue 
+				''
+			end
+		end
+		if self.obsolete.blank?
+			begin
+				obsolete_factor = self.project.obsolete
+				self.obsolete = obsolete_factor
+			rescue 
+				''
+			end
+		end
+		if final_value < 1
+			begin
+				if self.com_type == "A"
+					fvalue = ((self.purchase_unit*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor.split("%")[0].to_f*diff)/self.exp_life.to_f
+					self.final_value = fvalue.round(2)
+				end
+				if self.com_type == "B"
+					fvalue = ((self.est_price_soft*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+					self.final_value = fvalue.round(2)
+				end
+				if self.com_type == "C"
+					fvalue = ((self.est_price_pp*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+					self.final_value = fvalue.round(2)
+				end	
+				if self.com_type == "D"
+					self.final_value = self.est_price_pp
+				end	
+			rescue
+				''
+			end
+		end
 	end
 
 end
