@@ -11,6 +11,15 @@ module Crawl
         if document.css("#dvContainer table tbody tr").count > 2
           return document.css("#dvContainer table tbody tr")[1].css("td")[7].text.to_f
         else
+          newproduct = product.split(' ')[0...-1].join(' ')
+          while(newproduct != "")
+            baseUrl = "https://www.eximpulse.com/import-product-#{newproduct.gsub(' ','-')}.htm"
+            document = Nokogiri::HTML(open(baseUrl, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+            if document.css("#dvContainer table tbody tr").count > 2
+              return document.css("#dvContainer table tbody tr")[1].css("td")[7].text.to_f
+            end
+            newproduct = newproduct.split(' ')[0...-1].join(' ')
+          end
           return nil
         end
       end
@@ -25,6 +34,15 @@ module Crawl
         if document.css(".content table tr").count > 0
           return document.css(".content table tr")[1].css("td").last.text.to_f
         else
+          newproduct = product.split(' ')[0...-1].join(' ')
+          while(newproduct != "")
+            baseUrl = "https://www.zauba.com/import-#{newproduct.downcase.gsub(' ', '-')}-hs-code.html"
+            document = Nokogiri::HTML(open(baseUrl, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+            if document.css(".content table tr").count > 0
+              return document.css(".content table tr")[1].css("td").last.text.to_f
+            end
+            newproduct = newproduct.split(' ')[0...-1].join(' ')
+          end
           return nil
         end
       end
