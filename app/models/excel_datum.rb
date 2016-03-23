@@ -1,4 +1,5 @@
 require 'rubyXL'
+require 'crawl'
 class ExcelDatum < ActiveRecord::Base
 	belongs_to :project
 	before_save :fill_values
@@ -133,6 +134,21 @@ class ExcelDatum < ActiveRecord::Base
 			begin
 				obsolete_factor = self.project.obsolete
 				self.obsolete = obsolete_factor
+			rescue 
+				''
+			end
+		end
+		if self.market_value.blank?
+			begin
+				exim_price = Crawl::Eximpulse.get_price(self.com_name)
+				if exim_price.present?
+					self.market_value = exim_price
+				else
+					zauba_price = Crawl::Zauba.get_price(self.com_name)
+					if zauba_price.present?
+						self.market_value = zauba_price
+					end
+				end
 			rescue 
 				''
 			end

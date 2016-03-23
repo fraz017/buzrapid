@@ -11,7 +11,7 @@ module Crawl
         if document.css("#dvContainer table tbody tr").count > 2
           return document.css("#dvContainer table tbody tr")[1].css("td")[7].text.to_f
         else
-          return "N/A"
+          return nil
         end
       end
     end  
@@ -25,7 +25,7 @@ module Crawl
         if document.css(".content table tr").count > 0
           return document.css(".content table tr")[1].css("td").last.text.to_f
         else
-          return "N/A"
+          return nil
         end
       end
     end  

@@ -118,7 +118,7 @@
         <div class="row">
           <div class="col-md-2">
             <div class="actions">
-              <%= submit_tag "#{@project.id.present? ? 'Update' : 'Create'}", :class => "btn btn-default" %>
+              <%= submit_tag "#{@project.id.present? ? 'Update' : 'Create'}", :class => "upload btn btn-default" %>
             </div>
           </div>
         </div>
@@ -129,3 +129,25 @@
     <br>
   </div>
 </div>
+<div id="loading"></div>
+<script type="text/javascript">
+  $("#loading").hide();
+  $(document).ready(function(){
+    $(".upload").show();
+  });
+</script>   
+<style type="text/css">
+  #loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("http://i.stack.imgur.com/MnyxU.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+</style>
