@@ -76,7 +76,7 @@ class HomeController < ApplicationController
         else
           @excel = AdminDb.new
         end
-        @records = AdminDb.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+        @records = @project.admin_dbs.paginate(:page => params[:page], :per_page => 10)
       else
         if params[:record_id].present?
           @excel = ExcelDatum.where(:id => params[:record_id]).last 
@@ -86,7 +86,7 @@ class HomeController < ApplicationController
         else
           @excel = ExcelDatum.new
         end
-        @records = ExcelDatum.where(:project_id => params[:id]).paginate(:page => params[:page], :per_page => 10)
+        @records = @project.excel_datum.paginate(:page => params[:page], :per_page => 10)
       end
     else
       redirect_to root_url

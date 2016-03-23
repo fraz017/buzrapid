@@ -8,7 +8,7 @@ class AdminDb < ActiveRecord::Base
 		worksheet = workbook[0]
 		worksheet.each_with_index do |row, index|
 			if index > 1
-				data = ExcelDatum.new 	
+				data = AdminDb.new 	
     		data.com_name = row[0].value 
 	      data.com_type = row[1].value
 	      data.purchase_date = row[2].value
