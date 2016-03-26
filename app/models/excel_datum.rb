@@ -2,6 +2,7 @@ require 'rubyXL'
 require 'crawl'
 class ExcelDatum < ActiveRecord::Base
 	belongs_to :project
+	has_many :scrap_records
 	before_save :fill_values
 	def self.import(project)
 		workbook = RubyXL::Parser.parse project.file.path

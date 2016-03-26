@@ -69,7 +69,7 @@
                 <td><%= record.obsolete %></td>
                 <td><%= record.final_value %></td>
                 <td><%= record.source %></td>
-                <td><%= link_to "<i class='fa fa-pencil'></i>".html_safe, home_show_excel_path({:id => @project.id, :record_id => record.id }), :class => "btn-xs btn-warning" %>
+                <td><%= link_to "<i class='fa fa-pencil'></i>".html_safe, home_show_excel_path({:id => @project.id, :record_id => record.id }), :class => "btn-xs btn-warning open-col" %>
                 <%= link_to "<i class='fa fa-times'></i>".html_safe, home_delete_record_path({:id => record.id }), :method => :delete, :data => { confirm: "Are you sure?" }, :class => "btn-xs btn-danger" %></td>
               </tr>
             <% end %>

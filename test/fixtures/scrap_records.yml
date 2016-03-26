@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hs_code: MyString
+  desc: MyString
+  country: MyString
+  price_pp: 1.5
+
+two:
+  hs_code: MyString
+  desc: MyString
+  country: MyString
+  price_pp: 1.5

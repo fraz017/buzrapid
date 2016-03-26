@@ -1,155 +1,168 @@
-<%= form_for @excel, :url => home_save_record_path(@excel), :method => :post do |f| %>
-  <% if @errors.present? %>
-    <div>
-      <ul>
-      <% @errors.each do |k,v| %>
-        <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
-      <% end %>
-      </ul>
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapse1" aria-expanded= "<%= 'true' if @excel.id.present? %>" >Add Record</a>
+      </h4>
     </div>
-  <% end %>
-  <%= render 'layouts/messages' %>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :com_name, "Component Name" %><br>
-        <%= f.text_field :com_name, :class => "form-control", :required => true %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :com_type, "Type" %><br>
-        <%= f.text_field :com_type, :class => "form-control" %>
+    <div id="collapse1" class="panel-collapse collapse <%= 'in' if @excel.id.present? %>" aria-expanded= "<%= 'true' if @excel.id.present? %>">
+      <div class="panel-body">
+        <%= form_for @excel, :url => home_save_record_path(@excel), :method => :post do |f| %>
+          <% if @errors.present? %>
+            <div>
+              <ul>
+              <% @errors.each do |k,v| %>
+                <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <%= render 'layouts/messages' %>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :com_name, "Component Name" %><br>
+                <%= f.text_field :com_name, :class => "form-control", :required => true %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :com_type, "Type" %><br>
+                <%= f.text_field :com_type, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :purchase_unit, "Purchase Price" %><br>
+                <%= f.text_field :purchase_unit, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :industry %><br>
+                <%= f.text_field :company_type, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :location %><br>
+                <%= f.text_field :location, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :import_export, "Import/Export" %><br>
+                <%= f.text_field :import_export, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :market_value %><br>
+                <%= f.text_field :market_value, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :quantity %><br>
+                <%= f.text_field :quantity, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :est_price_soft, "Est Price Soft volt" %><br>
+                <%= f.text_field :est_price_soft, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :est_price_pp, "Est Price Past Projects" %><br>
+                <%= f.text_field :est_price_pp, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :expected_life %><br>
+                <%= f.text_field :exp_life, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :values_used %><br>
+                <%= f.text_field :values_used, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :remain_life %><br>
+                <%= f.text_field :remain_life, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :date_purchase %><br>
+                <%= f.date_field :date_purchase, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :inflation %><br>
+                <%= f.text_field :inflation, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :obsolete %><br>
+                <%= f.text_field :obsolete, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :final_value %><br>
+                <%= f.text_field :final_value, :class => "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :source %><br>
+                <%= f.text_field :source, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="field">
+                <%= label_tag :purchase_date %><br>
+                <%= f.date_field :purchase_date, :class => "form-control" %>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="id" value="<%= @project.id %>" />
+          <input type="hidden" name="excel_datum[id]" value="<%= @excel.id.present? ? @excel.id : '' %>" />
+          <div class="row">
+            <div class="col-md-2">
+              <div class="actions">
+                <%= submit_tag "Save", :class => "btn btn-default" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :purchase_unit, "Purchase Price" %><br>
-        <%= f.text_field :purchase_unit, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :industry %><br>
-        <%= f.text_field :company_type, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :location %><br>
-        <%= f.text_field :location, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :import_export, "Import/Export" %><br>
-        <%= f.text_field :import_export, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :market_value %><br>
-        <%= f.text_field :market_value, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :quantity %><br>
-        <%= f.text_field :quantity, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :est_price_soft, "Est Price Soft volt" %><br>
-        <%= f.text_field :est_price_soft, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :est_price_pp, "Est Price Past Projects" %><br>
-        <%= f.text_field :est_price_pp, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :expected_life %><br>
-        <%= f.text_field :exp_life, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :values_used %><br>
-        <%= f.text_field :values_used, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :remain_life %><br>
-        <%= f.text_field :remain_life, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :date_purchase %><br>
-        <%= f.date_field :date_purchase, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :inflation %><br>
-        <%= f.text_field :inflation, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :obsolete %><br>
-        <%= f.text_field :obsolete, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :final_value %><br>
-        <%= f.text_field :final_value, :class => "form-control" %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :source %><br>
-        <%= f.text_field :source, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="field">
-        <%= label_tag :purchase_date %><br>
-        <%= f.date_field :purchase_date, :class => "form-control" %>
-      </div>
-    </div>
-  </div>
-  <input type="hidden" name="id" value="<%= @project.id %>" />
-  <input type="hidden" name="excel_datum[id]" value="<%= @excel.id.present? ? @excel.id : '' %>" />
-  <div class="row">
-    <div class="col-md-2">
-      <div class="actions">
-        <%= submit_tag "Save", :class => "btn btn-default" %>
-      </div>
-    </div>
-  </div>
-<% end %>
+</div>

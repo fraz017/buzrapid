@@ -28,6 +28,7 @@ gem 'paperclip'
 gem 'rubyXL'
 gem 'ransack'
 gem 'will_paginate-bootstrap'
+gem 'delayed_job_active_record'
 # Use Unicorn as the app server
 # gem 'unicorn'
 # Use Capistrano for deployment

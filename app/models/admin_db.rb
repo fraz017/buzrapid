@@ -2,6 +2,7 @@ require 'rubyXL'
 require 'crawl'
 class AdminDb < ActiveRecord::Base
 	belongs_to :project
+	has_many :scrap_records
 	before_save :fill_values
 	def self.import(project)
 		workbook = RubyXL::Parser.parse project.file.path
@@ -143,10 +144,12 @@ class AdminDb < ActiveRecord::Base
 				exim_price = Crawl::Eximpulse.get_price(self.com_name)
 				if exim_price.present?
 					self.market_value = exim_price
+					self.source = "http://eximpulse.com"
 				else
 					zauba_price = Crawl::Zauba.get_price(self.com_name)
 					if zauba_price.present?
 						self.market_value = zauba_price
+						self.source = "http://zauba.com"
 					end
 				end
 			rescue 
