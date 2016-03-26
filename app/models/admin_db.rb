@@ -2,7 +2,7 @@ require 'rubyXL'
 require 'crawl'
 class AdminDb < ActiveRecord::Base
 	belongs_to :project
-	has_many :scrap_records
+	before_save :fill_values
 	def self.import(project)
 		workbook = RubyXL::Parser.parse project.file.path
 		worksheet = workbook[0]
@@ -26,7 +26,14 @@ class AdminDb < ActiveRecord::Base
 	      data.obsolete = row[14].present? ? row[14].value : ""
 	      data.final_value = row[15].present? ? row[15].value.to_f : 0.0    
 	      data.project_id = project.id
- 				data.save	
+ 				if data.save
+ 					begin
+						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
+						Crawl::Zauba.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
+					rescue
+						''
+					end
+ 				end	
 			end
 		end
 	end
@@ -35,7 +42,7 @@ class AdminDb < ActiveRecord::Base
 		if project.present?
 			workbook = RubyXL::Workbook.new
 			worksheet = workbook[0]
-			records = project.excel_datum
+			records = project.admin_dbs
 			worksheet.add_cell(0, 0, "Component Name").change_font_bold(true)
 			worksheet.add_cell(0, 1, "Component Type").change_font_bold(true)
 			worksheet.add_cell(0, 2, "Purchase Date").change_font_bold(true)
@@ -138,23 +145,23 @@ class AdminDb < ActiveRecord::Base
 				''
 			end
 		end
-		if self.market_value.blank?
-			begin
-				exim_price = Crawl::Eximpulse.get_price(self.com_name)
-				if exim_price.present?
-					self.market_value = exim_price
-					self.source = "http://eximpulse.com"
-				else
-					zauba_price = Crawl::Zauba.get_price(self.com_name)
-					if zauba_price.present?
-						self.market_value = zauba_price
-						self.source = "http://zauba.com"
-					end
-				end
-			rescue 
-				''
-			end
-		end
+		# if self.market_value.blank?
+		# 	begin
+		# 		exim_price = Crawl::Eximpulse.get_price(self.com_name)
+		# 		if exim_price.present?
+		# 			self.market_value = exim_price
+		# 			self.source = "http://eximpulse.com"
+		# 		else
+		# 			zauba_price = Crawl::Zauba.get_price(self.com_name)
+		# 			if zauba_price.present?
+		# 				self.market_value = zauba_price
+		# 				self.source = "http://zauba.com"
+		# 			end
+		# 		end
+		# 	rescue 
+		# 		''
+		# 	end
+		# end
 		if final_value < 1
 			begin
 				if self.com_type == "A"

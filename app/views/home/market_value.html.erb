@@ -1,0 +1,64 @@
+<div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+    <% if management? %>
+      <%= render partial: "market_value" %>
+    <% else %>
+      <strong>You are not authorized!</strong>  
+    <% end %>
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/">Projects</a></li>
+  </ul>
+  <% if management? %>
+    <div class="block">
+    <div class="block-title">
+      <h2><%= @record.com_name %></h2>
+    </div>
+      <div class="table-responsive">
+      <% if @records.present? %>
+      <%= form_tag(home_update_market_value_path, :method => "post") do %>
+        <table class="table table-vcenter table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Hs Code</th>
+              <th>Description</th>
+              <th>Country</th>
+              <th>Price/Unit</th>
+              <th>Source</th>
+              <th>Choose</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @records.each do |record| %>
+              <tr>
+              <td><%=record.name%></td>
+              <td><%=record.hs_code%></td>
+              <td><%=record.desc%></td>
+              <td><%=record.country%></td>
+              <td><%=record.price_pp%></td>
+              <td><%=record.source%></td>
+              <td align="center"><input type="radio" name="value" value="<%=record.id%>" class="form-control"></td>
+              <td><%= link_to "<i class='fa fa-times'></i>".html_safe, home_delete_scrap_path({:id => record.id }), :method => :delete, :data => { confirm: "Are you sure?" }, :class => "btn-xs btn-danger" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <input type="hidden" name="record_id" value="<%=@record.id%>" />
+        <input type="submit" value="Save" class="btn btn-default" />
+        <% end %>
+      <% else %>
+      <div class="text-center">
+        <strong>No records available! </strong><br/>
+      </div>
+      <% end %>
+      </div>
+    </div>
+  <% else %>
+    <strong>you are not authrorized!</strong>
+  <% end %>  
+</div>

@@ -1,0 +1,85 @@
+<%= render 'layouts/messages' %>
+<div class="block">
+  <div class="block-title">
+    <h2><%= @scrap.present? && @scrap.id.present? ? "Update Record" : "Add Market Value" %></h2>
+  </div>
+  <% if management? %>
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#collapse1" aria-expanded= "<%= 'true' if @scrap.id.present? %>" >Add New Record</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse <%= 'in' if @scrap.id.present? %>" aria-expanded= "<%= 'true' if @scrap.id.present? %>">
+        <div class="panel-body">
+          <%= form_for @scrap, :as => :scrap, :url => save_market_value_path(@scrap), :method => :post do |f| %>
+            <% if @errors.present? %>
+              <div>
+                <ul>
+                <% @errors.each do |k,v| %>
+                  <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
+                <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :name %><br>
+                  <%= f.text_field :name, :class => "form-control", :required => "required" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :hs_code %><br>
+                  <%= f.text_field :hs_code, :class => "form-control" %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :desc, "Description" %><br>
+                  <%= f.text_field :desc, :class => "form-control" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :country %><br>
+                  <%= f.text_field :country, :class => "form-control" %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :unit_price, "Price" %><br>
+                  <%= f.number_field :price_pp, :class => "form-control", min: 0 %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :source %><br>
+                  <%= f.text_field :source, :class => "form-control" %>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="scrap_id" value="<%=@scrap.id%>" />
+            <div class="row">
+              <div class="col-md-2">
+                <div class="actions">
+                  <%= submit_tag "#{@scrap.id.present? ? 'Update' : 'Create'}", :class => "upload btn btn-default" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div> 
+    </div>
+  </div> 
+  <% else %>
+    <strong>You are not authorized!</strong>  
+  <% end %>
+  <br>
+</div>

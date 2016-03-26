@@ -25,6 +25,10 @@ Rails.application.routes.draw do
   post '/home/save_record' => 'home#save_record'
   get '/edit_record' => 'home#edit_record'
   delete '/home/delete_record' => 'home#delete_record'
+  delete '/home/delete_scrap' => 'home#delete_scrap'
+  get '/home/market_value' => 'home#market_value'
+  post '/home/update_market_value' => 'home#update_market_value'
+  post '/save_market_value' => 'home#save_market_value'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

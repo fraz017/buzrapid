@@ -1,4 +1,3 @@
-require 'get_prices'
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
@@ -50,10 +49,8 @@ class HomeController < ApplicationController
         if @project.file_file_size.present?
           if current_user.role == :admin
             AdminDb.import @project
-            GetPrices.delay(run_at: 30.seconds.from_now).crawl(@project.id,"admin")
           else
             ExcelDatum.import @project
-            GetPrices.delay(run_at: 30.seconds.from_now).crawl(@project.id,"user")
           end
         end
         flash[:notice] = "Project successfully added! Some fields might take time.."
@@ -156,6 +153,19 @@ class HomeController < ApplicationController
       redirect_to request.referer  
     end
   end
+  def delete_scrap
+    if params[:id].present?
+      record = ScrapRecord.where(:id => params[:id]).last
+      if record.present? and record.destroy
+        flash[:notice] = "Successfully Destroyed!"
+      else
+        flash[:notice] = "Something went wrong!"
+      end
+      redirect_to request.referer
+    else
+      redirect_to request.referer  
+    end
+  end
   def edit_project
     if params[:id].present?
       @project = Project.where(:id => params[:id]).last
@@ -167,7 +177,49 @@ class HomeController < ApplicationController
       redirect_to root_url
     end
   end
-
+  def market_value
+    if params[:id].present?
+      if current_user.role == :admin
+        @record = AdminDb.where(:id => params[:id]).last
+      else
+        @record = ExcelDatum.where(:id => params[:id]).last
+      end
+      if params[:scrap_id].present?
+        @scrap = ScrapRecord.where(:id => params[:scrap_id]).last
+        if @scrap.blank?
+          @scrap = ScrapRecord.new
+        end
+      else
+        @scrap = ScrapRecord.new
+      end
+      if @record.present?
+        @records = ScrapRecord.where("name like ?","%#{@record.com_name.gsub(/\d+/,"")}%")
+      end
+    else
+      redirect_to root_url  
+    end
+  end
+  def update_market_value
+    if params[:record_id].present? and params[:value].present?
+      if current_user.role == :admin
+        record = AdminDb.where(:id => params[:record_id]).last
+      else
+        record = ExcelDatum.where(:id => params[:record_id]).last
+      end
+      if record.present?
+        scrap = ScrapRecord.where(:id => params[:value]).last
+        if scrap.present?
+          record.update_attributes(:source => scrap.source, :market_value => scrap.price_pp)
+          flash[:notice] = "Successfully Added Market Value!"
+        else
+          flash[:notice] = "Something went wrong!"  
+        end
+        redirect_to home_show_excel_path({:id => record.project.id})
+      else
+        redirect_to root_url
+      end
+    end
+  end
   def update_project
     if project_params.present? and params[:id]
       @project = Project.find params[:id]
@@ -181,7 +233,22 @@ class HomeController < ApplicationController
       redirect_to root_url  
     end
   end
-
+  def save_market_value
+    if scrap_params.present?
+      if params[:scrap_id].present?
+        @scrap = ScrapRecord.where(:id => params[:scrap_id]).last
+        @scrap.update_attributes(scrap_params)
+        flash[:notice] = "Successfully Updated!"
+      else
+        @scrap = ScrapRecord.new scrap_params
+        @scrap.save
+        flash[:notice] = "Successfully Added!"
+      end
+      redirect_to request.referer
+    else
+      redirect_to root_url
+    end
+  end
   def employees
   	if current_user.role == :hr || current_user.role == :director
   		@users = current_user.company.users.where('role_cd != 3 and role_cd != 4')
@@ -319,5 +386,8 @@ class HomeController < ApplicationController
   end
   def admin_db_params
     params.require(:admin_db).permit(:id, :com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
+  end
+  def scrap_params
+    params.require(:scrap).permit(:id, :name, :desc, :country, :source, :price_pp, :hs_code)
   end
 end
