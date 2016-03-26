@@ -1,3 +1,4 @@
+require 'get_prices'
 class HomeController < ApplicationController
 	before_action :authenticate_user!
   def index
@@ -47,17 +48,15 @@ class HomeController < ApplicationController
       @project = Project.new project_params
       if @project.save
         if @project.file_file_size.present?
-          begin
-            if current_user.role == :admin
-              AdminDb.import @project 
-            else
-              ExcelDatum.import @project 
-            end
-          rescue
-            flash[:notice] = "Something went wrong. Please check the excel file format."
+          if current_user.role == :admin
+            AdminDb.import @project
+            GetPrices.delay(run_at: 30.seconds.from_now).crawl(@project.id,"admin")
+          else
+            ExcelDatum.import @project
+            GetPrices.delay(run_at: 30.seconds.from_now).crawl(@project.id,"user")
           end
         end
-        flash[:notice] = "Successfully Added!"
+        flash[:notice] = "Project successfully added! Some fields might take time.."
         redirect_to home_show_excel_path({:id => @project.id})
       else
         redirect_to home_new_project_path({:errors => @project.errors.messages})
@@ -113,9 +112,9 @@ class HomeController < ApplicationController
           if current_user.role == :admin
             if excel_params[:id].present?
               excel = AdminDb.where(:id => excel_params[:id]).last
-              excel.update_attributes(excel_params)
+              excel.update_attributes(admin_db_params)
             else
-              excel = AdminDb.new excel_params
+              excel = AdminDb.new admin_db_params
             end
           else
             if excel_params[:id].present?
@@ -317,5 +316,8 @@ class HomeController < ApplicationController
   end
   def excel_params
     params.require(:excel_datum).permit(:id, :com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
+  end
+  def admin_db_params
+    params.require(:admin_db).permit(:id, :com_name, :purchase_date, :market_value, :source, :import_export, :location, :description, :purchase_unit)
   end
 end
