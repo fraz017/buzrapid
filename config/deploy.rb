@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'buzrapid'
-set :repo_url, 'https://fraz_017:imgreat1@bitbucket.org/buzrapid/machinary.git'
+set :repo_url, 'https://fraz_017:@bitbucket.org/buzrapid/machinary.git'
 
 set :branch, 'master'
 
