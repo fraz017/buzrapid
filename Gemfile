@@ -34,17 +34,22 @@ gem 'delayed_job_active_record'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'pry'
+gem 'mysql2', '>= 0.3.13', '< 0.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
+  gem 'capistrano3-delayed-job', '~> 1.0'
   # Use mysql as the database for Active Record
-  gem 'mysql2', '>= 0.3.13', '< 0.5'
 end
 
-group :production do 
-  gem 'pg'
-  gem 'rails_12factor'
-end
+# group :production do 
+#   gem 'pg'
+#   gem 'rails_12factor'
+# end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
