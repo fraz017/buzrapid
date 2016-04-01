@@ -31,8 +31,8 @@ class AdminDb < ActiveRecord::Base
 	      data.project_id = project.id
  				if data.save
  					begin
-						Crawl::Zauba.delay(run_at: 10.seconds.from_now, priority: 0, queue: "zauba").get_price(data.id,"admin")
-						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now, priority: 1, queue: "eximpulse").get_price(data.id,"admin")
+						Crawl::Zauba.delay(run_at: 10.seconds.from_now, priority: 0).get_price(data.id,"admin")
+						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now, priority: 1).get_price(data.id,"admin")
 					rescue
 						''
 					end
