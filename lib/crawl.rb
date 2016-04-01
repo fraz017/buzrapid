@@ -11,7 +11,7 @@ module Crawl
         else
           product = ExcelDatum.where(:id => product_id).last
         end
-        check = ScrapRecord.where(" name like ? ","%#{product.com_name.gsub(/\d+/,"")}%")
+        check = ScrapRecord.where(" name like ? AND source like ?","%#{product.com_name.gsub(/\d+/,"")}%", "www.eximpulse.com")
         if check.blank?
           begin
             baseUrl = "https://www.eximpulse.com/import-product-#{product.com_name.gsub(' ','-')}.htm"
@@ -84,7 +84,7 @@ module Crawl
         else
           product = ExcelDatum.where(:id => product_id).last
         end
-        check = ScrapRecord.where(" name like ? ","%#{product.com_name.gsub(/\d+/,"")}%")
+        check = ScrapRecord.where("name like ? AND source like ?","%#{product.com_name.gsub(/\d+/,"")}%", "www.zauba.com")
         if check.blank?
           begin
             baseUrl = "https://www.zauba.com/import-#{product.com_name.downcase.gsub(' ', '-')}-hs-code.html"
