@@ -99,10 +99,10 @@ module Crawl
               end
               begin
               record = ScrapRecord.new
-              record.hs_code = tr.css("td")[2].try(:text)
-              record.desc = tr.css("td")[4].try(:text)
+              record.hs_code = tr.css("td")[1].try(:text)
+              record.desc = tr.css("td")[2].try(:text)
               record.country = tr.css("td")[3].try(:text)
-              record.price_pp = tr.css("td")[7].try(:text).to_f
+              record.price_pp = tr.css("td")[8].try(:text).to_f
               record.source = "www.zauba.com"
               record.name = product.com_name
               record.save!
@@ -127,10 +127,10 @@ module Crawl
                   end
                   begin
                   record = ScrapRecord.new
-                  record.hs_code = tr.css("td")[2].try(:text)
-                  record.desc = tr.css("td")[4].try(:text)
+                  record.hs_code = tr.css("td")[1].try(:text)
+                  record.desc = tr.css("td")[2].try(:text)
                   record.country = tr.css("td")[3].try(:text)
-                  record.price_pp = tr.css("td")[7].try(:text).to_f
+                  record.price_pp = tr.css("td")[8].try(:text).to_f
                   record.source = "www.zauba.com"
                   record.name = product.com_name
                   record.save!
