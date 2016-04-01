@@ -29,7 +29,7 @@ class ExcelDatum < ActiveRecord::Base
  				if data.save
  					begin
 						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now).get_price(data.id,"user")
-						Crawl::Zauba.delay(run_at: 15.seconds.from_now).get_price(data.id,"user")
+						Crawl::Zauba.delay(run_at: 20.seconds.from_now).get_price(data.id,"user")
 					rescue
 						''
 					end

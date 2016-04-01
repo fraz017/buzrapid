@@ -32,7 +32,7 @@ class AdminDb < ActiveRecord::Base
  				if data.save
  					begin
 						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
-						Crawl::Zauba.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
+						Crawl::Zauba.delay(run_at: 20.seconds.from_now).get_price(data.id,"admin")
 					rescue
 						''
 					end
