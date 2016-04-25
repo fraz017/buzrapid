@@ -11,7 +11,7 @@ module Crawl
         else
           product = ExcelDatum.where(:id => product_id).last
         end
-        check = ScrapRecord.where(" name like ? ","%#{product.com_name.gsub(/\d+/,"")}%")
+        check = ScrapRecord.where(" name like ? AND source like ?","%#{product.com_name.gsub(/\d+/,"")}%", "www.eximpulse.com")
         if check.blank?
           begin
             baseUrl = "https://www.eximpulse.com/import-product-#{product.com_name.gsub(' ','-')}.htm"
@@ -29,7 +29,7 @@ module Crawl
               record.hs_code = tr.css("td")[2].try(:text)
               record.desc = tr.css("td")[4].try(:text)
               record.country = tr.css("td")[3].try(:text)
-              record.price_pp = tr.css("td")[7].try(:text).to_f
+              record.price_pp = tr.css("td")[7].try(:text).gsub(",","").to_f
               record.source = "www.eximpulse.com"
               record.name = product.com_name
               record.save!
@@ -57,7 +57,7 @@ module Crawl
                   record.hs_code = tr.css("td")[2].try(:text)
                   record.desc = tr.css("td")[4].try(:text)
                   record.country = tr.css("td")[3].try(:text)
-                  record.price_pp = tr.css("td")[7].try(:text).to_f
+                  record.price_pp = tr.css("td")[7].try(:text).gsub(",","").to_f
                   record.source = "www.eximpulse.com"
                   record.name = product.com_name
                   record.save!
@@ -84,7 +84,7 @@ module Crawl
         else
           product = ExcelDatum.where(:id => product_id).last
         end
-        check = ScrapRecord.where(" name like ? ","%#{product.com_name.gsub(/\d+/,"")}%")
+        check = ScrapRecord.where("name like ? AND source like ?","%#{product.com_name.gsub(/\d+/,"")}%", "www.zauba.com")
         if check.blank?
           begin
             baseUrl = "https://www.zauba.com/import-#{product.com_name.downcase.gsub(' ', '-')}-hs-code.html"
@@ -99,10 +99,10 @@ module Crawl
               end
               begin
               record = ScrapRecord.new
-              record.hs_code = tr.css("td")[2].try(:text)
-              record.desc = tr.css("td")[4].try(:text)
+              record.hs_code = tr.css("td")[1].try(:text)
+              record.desc = tr.css("td")[2].try(:text)
               record.country = tr.css("td")[3].try(:text)
-              record.price_pp = tr.css("td")[7].try(:text).to_f
+              record.price_pp = tr.css("td")[8].try(:text).gsub(",","").to_f
               record.source = "www.zauba.com"
               record.name = product.com_name
               record.save!
@@ -127,10 +127,10 @@ module Crawl
                   end
                   begin
                   record = ScrapRecord.new
-                  record.hs_code = tr.css("td")[2].try(:text)
-                  record.desc = tr.css("td")[4].try(:text)
+                  record.hs_code = tr.css("td")[1].try(:text)
+                  record.desc = tr.css("td")[2].try(:text)
                   record.country = tr.css("td")[3].try(:text)
-                  record.price_pp = tr.css("td")[7].try(:text).to_f
+                  record.price_pp = tr.css("td")[8].try(:text).gsub(",","").to_f
                   record.source = "www.zauba.com"
                   record.name = product.com_name
                   record.save!

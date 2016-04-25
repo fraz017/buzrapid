@@ -1,40 +1,43 @@
 require 'rubyXL'
 require 'crawl'
+require 'roo'
 class AdminDb < ActiveRecord::Base
 	belongs_to :project
 	before_save :fill_values
 	def self.import(project)
-		workbook = RubyXL::Parser.parse project.file.path
-		worksheet = workbook[0]
-		worksheet.each_with_index do |row, index|
-			if index > 1
+		workbook = Roo::Excelx.new("#{project.file.path}")
+		# workbook = RubyXL::Parser.parse project.file.path
+		# worksheet = workbook[0]
+		(workbook.first_row..workbook.last_row).each_with_index do |r, index|
+			if index > 0
+				row = workbook.row(r)
 				data = AdminDb.new 	
-    		data.com_name = row[0].value 
-	      data.com_type = row[1].value
-	      data.purchase_date = row[2].value
-	      data.company_type = row[3].value
-	      data.quantity = row[4].value
-	      data.purchase_unit = row[5].value.present? ? row[5].value.to_f : 0.0
-	      data.est_price_soft = row[6].value 
-	      data.est_price_pp = row[7].value   
-	      data.market_value = row[8].value   
-	      data.exp_life = row[9].value
-	      data.values_used = row[10].value    
-	      data.date_purchase = row[11].value
-	      data.remain_life = row[12].present? ? row[12].value : ""
-	      data.inflation = row[13].present? ? row[13].value : ""
-	      data.obsolete = row[14].present? ? row[14].value : ""
-	      data.final_value = row[15].present? ? row[15].value.to_f : 0.0    
+    		data.com_name = row[0].squish 
+	      data.com_type = row[1].squish
+	      data.purchase_date = row[2]
+	      data.company_type = row[3].squish
+	      data.quantity = row[4]
+	      data.purchase_unit = row[5].present? ? row[5].to_f : 0.0
+	      data.est_price_soft = row[6]
+	      data.est_price_pp = row[7]   
+	      data.market_value = row[8]   
+	      data.exp_life = row[9]
+	      data.values_used = row[10]    
+	      data.date_purchase = row[11]
+	      data.remain_life = row[12].present? ? row[12].squish : ""
+	      data.inflation = row[13].present? ? row[13].squish : ""
+	      data.obsolete = row[14].present? ? row[14].squish : ""
+	      data.final_value = row[15].present? ? row[15].to_f : 0.0    
 	      data.project_id = project.id
  				if data.save
  					begin
-						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
-						Crawl::Zauba.delay(run_at: 15.seconds.from_now).get_price(data.id,"admin")
+						Crawl::Zauba.delay(run_at: 10.seconds.from_now, priority: 0).get_price(data.id,"admin")
+						Crawl::Eximpulse.delay(run_at: 15.seconds.from_now, priority: 1).get_price(data.id,"admin")
 					rescue
 						''
 					end
  				end	
-			end
+			end	
 		end
 	end
 	def self.generate_excel(project_id)
