@@ -27,7 +27,7 @@ class AdminDb < ActiveRecord::Base
 	      data.remain_life = row[12].present? ? row[12].squish : ""
 	      data.inflation = row[13].present? ? row[13].squish : ""
 	      data.obsolete = row[14].present? ? row[14].squish : ""
-	      data.final_value = row[15].present? ? row[15].to_f : 0.0    
+	      data.final_value = zero_or_value(row[15])
 	      data.project_id = project.id
  				if data.save
  					begin
@@ -40,6 +40,13 @@ class AdminDb < ActiveRecord::Base
 			end	
 		end
 	end
+	def self.zero_or_value(value)
+    if value.is_a?(Float)
+        value.nan? ? 0 : value.to_f
+    else
+      value.to_f
+    end     
+  end
 	def self.generate_excel(project_id)
 		project = Project.find project_id
 		if project.present?
@@ -165,27 +172,27 @@ class AdminDb < ActiveRecord::Base
 		# 		''
 		# 	end
 		# end
-		if final_value < 1
-			begin
-				if self.com_type == "A"
-					fvalue = ((self.purchase_unit*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor.split("%")[0].to_f*diff)/self.exp_life.to_f
-					self.final_value = fvalue.round(2)
-				end
-				if self.com_type == "B"
-					fvalue = ((self.est_price_soft*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
-					self.final_value = fvalue.round(2)
-				end
-				if self.com_type == "C"
-					fvalue = ((self.est_price_pp*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
-					self.final_value = fvalue.round(2)
-				end	
-				if self.com_type == "D"
-					self.final_value = self.est_price_pp
-				end	
-			rescue
-				''
-			end
-		end
+		# if final_value < 1
+		# 	begin
+		# 		if self.com_type == "A"
+		# 			fvalue = ((self.purchase_unit*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor.split("%")[0].to_f*diff)/self.exp_life.to_f
+		# 			self.final_value = fvalue.nan? ? 0.0 : fvalue.round(2)
+		# 		end
+		# 		if self.com_type == "B"
+		# 			fvalue = ((self.est_price_soft*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+		# 			self.final_value = fvalue.nan? ? 0.0 : fvalue.round(2)
+		# 		end
+		# 		if self.com_type == "C"
+		# 			fvalue = ((self.est_price_pp*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+		# 			self.final_value = fvalue.nan? ? 0.0 : fvalue.round(2)
+		# 		end	
+		# 		if self.com_type == "D"
+		# 			self.final_value = self.est_price_pp
+		# 		end	
+		# 	rescue
+		# 		''
+		# 	end
+		# end
 	end
 
 end

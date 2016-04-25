@@ -374,6 +374,44 @@ class HomeController < ApplicationController
   	end
   end
 
+  def scrap_data
+    @scrap = ScrapRecord.new
+  end
+
+  def save_scrap_data
+    if params[:scrap][:file].present?
+      scrap = ScrapRecord.new
+      scrap.file = params[:scrap][:file]
+      if scrap.save
+        ScrapRecord.import(scrap.file)
+      end
+      flash[:success] = "Successfully Uploaded!"
+      redirect_to scrap_data_path
+    else
+      flash[:warning] = "Something went wrong!"
+      redirect_to scrap_data_path
+    end
+  end
+
+  def update_final_value
+    if params[:value].present? && params[:record_id].present?
+      if current_user.role == :admin
+        record = AdminDb.where(:id => params[:record_id]).last
+      else
+        record = ExcelDatum.where(:id => params[:record_id]).last
+      end
+      if record.present?
+        record.update_attributes(:final_value => params[:value])
+        flash[:success] = "Successfully Assigned!"
+      else
+        flash[:warning] = "Something went wrong!"
+      end
+      redirect_to request.referer
+    else
+      redirect_to request.referer
+    end
+  end
+
   private
   def user_params
   	params.require(:user).permit(:id ,:name, :email, :password, :password_confirmation, :role_cd, :company_id)

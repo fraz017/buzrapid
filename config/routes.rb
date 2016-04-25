@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   get '/home/market_value' => 'home#market_value'
   post '/home/update_market_value' => 'home#update_market_value'
   post '/save_market_value' => 'home#save_market_value'
+  get 'scrap_data' => 'home#scrap_data'
+  post 'save_scrap_data' => 'home#save_scrap_data'
+  post 'update_final_value' => 'home#update_final_value'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

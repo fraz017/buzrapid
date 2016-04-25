@@ -163,26 +163,26 @@ class ExcelDatum < ActiveRecord::Base
 		# 		''
 		# 	end
 		# end
-		if final_value < 1
-			begin
-				if self.com_type == "A"
-					fvalue = ((self.purchase_unit*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor.split("%")[0].to_f*diff)/self.exp_life.to_f
-					self.final_value = fvalue.round(2)
-				end
-				if self.com_type == "B"
-					fvalue = ((self.est_price_soft*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
-					self.final_value = fvalue.round(2)
-				end
-				if self.com_type == "C"
-					fvalue = ((self.est_price_pp*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
-					self.final_value = fvalue.round(2)
-				end	
-				if self.com_type == "D"
-					self.final_value = self.est_price_pp
-				end	
-			rescue
-				''
-			end
-		end
+		# if final_value < 1
+		# 	begin
+		# 		if self.com_type == "A"
+		# 			fvalue = ((self.purchase_unit*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0)*obsolete_factor.split("%")[0].to_f*diff)/self.exp_life.to_f
+		# 			self.final_value = fvalue.round(2)
+		# 		end
+		# 		if self.com_type == "B"
+		# 			fvalue = ((self.est_price_soft*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+		# 			self.final_value = fvalue.round(2)
+		# 		end
+		# 		if self.com_type == "C"
+		# 			fvalue = ((self.est_price_pp*(inflation_factor.split("%")[0].to_f))**(((Date.today-self.purchase_date.to_date).to_i)/365.0))*obsolete_factor.split("%")[0].to_f
+		# 			self.final_value = fvalue.round(2)
+		# 		end	
+		# 		if self.com_type == "D"
+		# 			self.final_value = self.est_price_pp
+		# 		end	
+		# 	rescue
+		# 		''
+		# 	end
+		# end
 	end
 end

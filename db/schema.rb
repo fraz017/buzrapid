@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160326104318) do
+ActiveRecord::Schema.define(version: 20160425161736) do
 
   create_table "admin_dbs", force: :cascade do |t|
     t.string   "com_name",       limit: 255
@@ -29,13 +29,13 @@ ActiveRecord::Schema.define(version: 20160326104318) do
     t.string   "remain_life",    limit: 255
     t.string   "inflation",      limit: 255
     t.string   "obsolete",       limit: 255
-    t.float    "final_value",    limit: 24
+    t.float    "final_value",    limit: 24,  default: 0.0
     t.integer  "project_id",     limit: 4
     t.string   "import_export",  limit: 255
     t.string   "location",       limit: 255
     t.string   "source",         limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "companies", force: :cascade do |t|
@@ -77,10 +77,10 @@ ActiveRecord::Schema.define(version: 20160326104318) do
     t.string   "remain_life",    limit: 255
     t.string   "inflation",      limit: 255
     t.string   "obsolete",       limit: 255
-    t.float    "final_value",    limit: 24
+    t.float    "final_value",    limit: 24,  default: 0.0
     t.integer  "project_id",     limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "import_export",  limit: 255
     t.string   "location",       limit: 255
     t.string   "source",         limit: 255
@@ -105,16 +105,20 @@ ActiveRecord::Schema.define(version: 20160326104318) do
   end
 
   create_table "scrap_records", force: :cascade do |t|
-    t.string   "hs_code",        limit: 255
-    t.string   "desc",           limit: 255
-    t.string   "country",        limit: 255
-    t.float    "price_pp",       limit: 24
-    t.integer  "admin_db_id",    limit: 4
-    t.integer  "excel_datum_id", limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "source",         limit: 255
-    t.string   "name",           limit: 255
+    t.string   "hs_code",           limit: 255
+    t.string   "desc",              limit: 255
+    t.string   "country",           limit: 255
+    t.float    "price_pp",          limit: 24
+    t.integer  "admin_db_id",       limit: 4
+    t.integer  "excel_datum_id",    limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "source",            limit: 255
+    t.string   "name",              limit: 255
+    t.string   "file_file_name",    limit: 255
+    t.string   "file_content_type", limit: 255
+    t.integer  "file_file_size",    limit: 4
+    t.datetime "file_updated_at"
   end
 
   create_table "users", force: :cascade do |t|

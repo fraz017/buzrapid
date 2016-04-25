@@ -1,0 +1,65 @@
+<div id="page-content">
+  <div class="content-header">
+    <div class="header-section">
+      <h1>
+        <i class="fa fa-users"></i>
+        Scrap Data
+        <br>
+        <br>
+        <small></small>
+      </h1>
+    </div>
+  </div>
+  <ul class="breadcrumb breadcrumb-top">
+    <li>Dashboard</li>
+    <li><a href="/">Projects</a></li>
+  </ul>
+<%= render 'layouts/messages' %>
+<div class="block">
+  <div class="block-title">
+    <h2>Add Scrap Data</h2>
+  </div>
+    <% if current_user.role == :admin %>
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Scrap Data
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in" aria-expanded= "true">
+          <div class="panel-body">
+            <%= form_for @scrap, :as => :scrap, :url => save_scrap_data_path, :method => :post do |f| %>
+              <% if @errors.present? %>
+                <div>
+                  <ul>
+                  <% @errors.each do |k,v| %>
+                    <li class="alert alert-danger"><%= k %> <%= v[0] %></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="field">
+                    <%= label_tag :upload_excel %><br>
+                    <%= f.file_field :file, :class => "form-control" , id: "file-field" %>
+                  </div>
+                </div>  
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="actions">
+                    <%= f.submit "Upload", :class => "upload btn btn-default" %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div> 
+      </div>
+    </div> 
+    <% else %>
+      <strong>You are not authorized!</strong>  
+    <% end %>
+    <br>
+  </div>
+</div>
