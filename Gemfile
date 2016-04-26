@@ -33,7 +33,6 @@ gem 'will_paginate-bootstrap'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'roo', '~> 2.1.0'
-gem 'rubyception'
 gem 'non-stupid-digest-assets', '~> 1.0.4', group: :production
 # Use Unicorn as the app server
 # gem 'unicorn'

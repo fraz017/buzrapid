@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  mount Rubyception::Engine => '/rubyception'
   resources :companies
   get 'home/index'
 
