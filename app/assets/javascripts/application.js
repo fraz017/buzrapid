@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require modernizr-respond.min
 //= require bootstrap.min
 //= require plugins
